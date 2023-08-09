@@ -54,6 +54,7 @@ app.post("/get-castings", async (req, res) => {
 			if (req.body.castingId == 0) {
 				casting.name = $(el).find("h2 a").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.date = $(el).find("p span").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.description = $(el).find("div").text().replace(/[\n\t]+/g, ' ').trim();
 			}
 			if (req.body.castingId == 7) {
 				casting.name = $(el).find("h3").text().replace(/[\n\t]+/g, ' ').trim();
