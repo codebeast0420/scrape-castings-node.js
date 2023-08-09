@@ -13,6 +13,10 @@ app.use(cors({
 	origin: '*'
 }));
 
+app.get("/", (req, res) => {
+	res.send('success')
+});
+
 app.post("/get-castings", async (req, res) => {
 	console.log('req', req.body);
 	let url = '';
