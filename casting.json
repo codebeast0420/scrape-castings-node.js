@@ -1,115 +1,131 @@
 [
   {
+    "name": "Casting comédien homme ou femme entre 25 et 35 ans pour tournage vidéo interne",
+    "date": "Du 10/08/2023 au 18/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193569-casting-comedien-homme-ou-femme-entre-25-et-35-ans-pour-tournage-video-interne",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting figurant homme et femme entre 16 et 80 ans pour tournage long-métrage",
+    "date": "Du 10/08/2023 au 09/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193555-casting-figurant-homme-et-femme-entre-16-et-80-ans-pour-tournage-long-metrage",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting femme entre 30 et 45 ans pour tournage long-métrage",
+    "date": "Du 10/08/2023 au 16/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193568-casting-femme-entre-30-et-45-ans-pour-tournage-long-metrage",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting homme entre 35 et 50 ans pour tournage long-métrage",
+    "date": "Du 10/08/2023 au 16/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193567-casting-homme-entre-35-et-50-ans-pour-tournage-long-metrage",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting femme typée afro entre 20 et 30 ans pour tournage long-métrage",
+    "date": "Du 10/08/2023 au 16/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193566-casting-femme-typee-afro-entre-20-et-30-ans-pour-tournage-long-metrage",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting homme entre 20 et 30 ans pour tournage long-métrage",
+    "date": "Du 10/08/2023 au 16/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193565-casting-homme-entre-20-et-30-ans-pour-tournage-long-metrage",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting jeune homme de plus de 18 ans pour tournage long-métrage",
+    "date": "Du 10/08/2023 au 16/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193564-casting-jeune-homme-de-plus-de-18-ans-pour-tournage-long-metrage",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting sœurs jumelles entre 22 et 35 ans pour tournage court-métrage d'époque",
+    "date": "Du 10/08/2023 au 15/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193559-casting-soeurs-jumelles-entre-22-et-35-ans-pour-tournage-court-metrage-depoque",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting doublure homme entre 50 et 70 ans pour tournage \"Opération Portugal 2\" avec D'Jal",
+    "date": "Du 10/08/2023 au 16/08/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193562-casting-doublure-homme-entre-50-et-70-ans-pour-tournage-operation-portugal-2-avec-djal",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting comédien entre 35 et 50 ans avec enfant d'environ 10 ans pour caméra cachée de Greg Guillotin",
+    "date": "Du 10/08/2023 au 10/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/television-radio/193556-casting-comedien-entre-35-et-50-ans-avec-enfant-denviron-10-ans-pour-camera-cachee-de-greg-guillotin",
+    "category": "Télévision / Radio"
+  },
+  {
+    "name": "Casting silhouette homme entre 35 et 45 ans pour tournage série France TV",
+    "date": "Du 10/08/2023 au 17/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193558-casting-silhouette-homme-entre-35-et-45-ans-pour-tournage-serie-france-tv",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting femme espagnole entre 25 et 45 ans pour tournage série France TV",
+    "date": "Du 10/08/2023 au 28/08/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193557-casting-femme-espagnole-entre-25-et-45-ans-pour-tournage-serie-france-tv",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting figurant homme entre 25 et 45 ans pour tournage série Netflix réalisée par Franck Gastambide",
+    "date": "Du 10/08/2023 au 06/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193553-casting-figurant-homme-entre-25-et-45-ans-pour-tournage-serie-netflix-realisee-par-franck-gastambide",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting figurant homme entre 30 et 55 ans pour tournage série Netflix réalisée par Franck Gastambide",
+    "date": "Du 10/08/2023 au 01/09/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193552-casting-figurant-homme-entre-30-et-55-ans-pour-tournage-serie-netflix-realisee-par-franck-gastambide",
+    "category": "Cinéma / Fiction"
+  },
+  {
+    "name": "Casting homme et femme à partir de 16 ans pour tournage série avec François-Xavier Demaison",
+    "date": "Du 10/08/2023 au 28/08/2023",
+    "place": "",
+    "description": "",
+    "link": "https://www.casting.fr/castings/cinema-fiction/193550-casting-homme-et-femme-a-partir-de-16-ans-pour-tournage-serie-avec-francois-xavier-demaison",
+    "category": "Cinéma / Fiction"
+  },
+  {
     "name": "Casting silhouette entre 20 et 55 ans pour tournage série",
     "date": "Du 09/08/2023 au 30/09/2023",
     "place": "",
     "description": "",
     "link": "https://www.casting.fr/castings/cinema-fiction/193546-casting-silhouette-entre-20-et-55-ans-pour-tournage-serie",
     "category": "Cinéma / Fiction"
-  },
-  {
-    "name": "Casting modèle asiatique entre 18 et 25 ans pour tournage publicité",
-    "date": "Du 04/08/2023 au 04/09/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193442-casting-modele-asiatique-entre-18-et-25-ans-pour-tournage-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle sportive pour publicité JO Paris 2024",
-    "date": "Du 01/08/2023 au 01/09/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193370-casting-modele-sportive-pour-publicite-jo-paris-2024",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting danseur entre 18 et 30 ans pour tournage clip",
-    "date": "Du 31/07/2023 au 31/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/musique-danse/193339-casting-danseur-entre-18-et-30-ans-pour-tournage-clip",
-    "category": "Musique / Danse"
-  },
-  {
-    "name": "Casting modèle jumelle entre 18 et 25 ans pour tournage publicité",
-    "date": "Du 31/07/2023 au 31/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193338-casting-modele-jumelle-entre-18-et-25-ans-pour-tournage-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle entre 18 et 25 ans pour publicité",
-    "date": "Du 31/07/2023 au 31/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193334-casting-modele-entre-18-et-25-ans-pour-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle femme entre 18 et 25 ans avec piercing pour tournage publicité",
-    "date": "Du 28/07/2023 au 28/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193300-casting-modele-femme-entre-18-et-25-ans-avec-piercing-pour-tournage-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle homme et femme sachant préparer cuisine asiatique pour publicité",
-    "date": "Du 28/07/2023 au 28/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/cinema-fiction/193299-casting-modele-homme-et-femme-sachant-preparer-cuisine-asiatique-pour-publicite",
-    "category": "Cinéma / Fiction"
-  },
-  {
-    "name": "Casting modèle blonde entre 18 et 25 ans pour publicité",
-    "date": "Du 28/07/2023 au 28/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193298-casting-modele-blonde-entre-18-et-25-ans-pour-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle femme entre 18 et 25 ans pour tournage publicité",
-    "date": "Du 28/07/2023 au 28/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/cinema-fiction/193297-casting-modele-femme-entre-18-et-25-ans-pour-tournage-publicite",
-    "category": "Cinéma / Fiction"
-  },
-  {
-    "name": "Casting modèle rousse entre 18 et 25 ans pour publicité",
-    "date": "Du 28/07/2023 au 28/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193296-casting-modele-rousse-entre-18-et-25-ans-pour-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle femme de 18 ans minimum avec piercing sur la langue pour tournage publicité",
-    "date": "Du 25/07/2023 au 19/08/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/192967-casting-modele-femme-de-18-ans-minimum-avec-piercing-sur-la-langue-pour-tournage-publicite",
-    "category": "Mode / Beauté"
-  },
-  {
-    "name": "Casting modèle photographe entre 18 et 30 ans pour série documentaire",
-    "date": "Du 04/08/2023 au 04/09/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/cinema-fiction/193445-casting-modele-photographe-entre-18-et-30-ans-pour-serie-documentaire",
-    "category": "Cinéma / Fiction"
-  },
-  {
-    "name": "Casting modèle femme entre 16 et 25 ans pour tournage publicité",
-    "date": "Du 04/08/2023 au 04/09/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193454-casting-modele-femme-entre-16-et-25-ans-pour-tournage-publicite",
-    "category": "Mode / Beauté"
   },
   {
     "name": "Casting homme entre 50 et 55 ans pour shooting photo SPA",
@@ -256,14 +272,6 @@
     "category": "Mode / Beauté"
   },
   {
-    "name": "Casting modèle artiste tatouages et piercings entre 18 et 25 ans pour campagne publicitaire",
-    "date": "Du 08/08/2023 au 08/09/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193499-casting-modele-artiste-tatouages-et-piercings-entre-18-et-25-ans-pour-campagne-publicitaire",
-    "category": "Mode / Beauté"
-  },
-  {
     "name": "Casting comédien homme et femme de 18 à 60 ans pour tournage film institutionnel",
     "date": "Du 07/08/2023 au 07/09/2023",
     "place": "",
@@ -318,13 +326,5 @@
     "description": "",
     "link": "https://www.casting.fr/castings/cinema-fiction/193487-casting-comedienne-entre-30-et-50-ans-pour-tournage-publicitaire",
     "category": "Cinéma / Fiction"
-  },
-  {
-    "name": "Casting modèle entre 18 et 25 ans pour tournage campagne publicitaire",
-    "date": "Du 07/08/2023 au 07/09/2023",
-    "place": "",
-    "description": "",
-    "link": "https://www.casting.fr/castings/mode-beaute/193483-casting-modele-entre-18-et-25-ans-pour-tournage-campagne-publicitaire",
-    "category": "Mode / Beauté"
   }
 ]
