@@ -17,6 +17,41 @@ app.get("/", (req, res) => {
 	res.send('success')
 });
 
+app.post("/load-more", async (req, res) => {
+	const puppeteer = require('puppeteer');
+
+	const scrapeInfiniteScrollItems = async (page, itemTargetCount) => {
+		let items = [];
+
+		console.log('here');
+		items = await page.evaluate(() => {
+			const _items = Array.from(document.querySelectorAll("article"));
+			console.log('item', _items);
+			return _items.map((item) => item.innerText);
+		})
+		previousHeight = await page.evaluate('document.body.scrollHeight');
+		await page.evaluate(`window.scrollTo(0, ${previousHeight - 680})`);
+		await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`);
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+
+
+		console.log(items);
+		console.log(items.length);
+		return items;
+	}
+
+	(async () => {
+		const browser = await puppeteer.launch({
+			headless: false
+		});
+
+		const page = await browser.newPage();
+		await page.goto("https://www.maxicasting.com/castings");
+
+		const items = await scrapeInfiniteScrollItems(page, 10);
+	})();
+})
+
 app.post("/get-castings-page", async (req, res) => {
 	console.log('req', req.body);
 	let url = '';
@@ -126,28 +161,6 @@ app.post("/get-castings", async (req, res) => {
 			}
 
 			if (req.body.castingId == 1) {
-				// const puppeteer = require('puppeteer');
-
-				// const scrapeInfiniteScrollItems = async (page) => {
-				// 	while (true) {
-				// 		previousHeight = await page.evaluate('document.body.scrollHeight');
-				// 		await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-				// 		await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`);
-				// 		await new Promise((resolve) => setTimeout(resolve, 1000));
-				// 	}
-				// }
-
-				// (async () => {
-				// 	const browser = await puppeteer.launch({
-				// 		headless: false
-				// 	});
-
-				// 	const page = await browser.newPage();
-				// 	await page.goto("https://www.maxicasting.com/castings");
-
-				// 	let result = await scrapeInfiniteScrollItems(page);
-				// 	// console.log('result', result);
-				// })();
 				casting.name = $(el).find(".entry-article-header h2 a").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.date = $(el).find(".entry-article-header .entry-meta span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.place = $(el).find(".entry-article-header .entry-meta span:nth-child(3) a").text().replace(/[\n\t]+/g, ' ').trim();
@@ -211,7 +224,6 @@ app.post("/get-castings", async (req, res) => {
 		console.error(err);
 	}
 })
-
 
 
 app.listen(5000, () => console.log("Servier is listening to port 5000"));
