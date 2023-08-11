@@ -69,8 +69,9 @@ app.post("/get-castings-page", async (req, res) => {
 
 			if (req.body.castingId == 4) {
 				casting.name = $(el).find("a h2").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.date = $(el).find("a p:nth-child(2)").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.description = $(el).find("a p").text().replace(/[\n\t]+/g, ' ').trim();
+				const detail = $(el).find("a p").text().trim().split('\n');
+				casting.date = detail[1].replace(/[\n\t]+/g, ' ').trim()
+				casting.description = detail[0].replace(/[\n\t]+/g, ' ').trim();
 				casting.category = $(el).find("a div .casting-tag").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.link = $(el).find("a").attr('href');
 			}
