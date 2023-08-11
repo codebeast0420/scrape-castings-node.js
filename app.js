@@ -79,6 +79,10 @@ app.post("/get-castings-page", async (req, res) => {
 		pageLink = "/" + req.body.page;
 	}
 
+	if (req.body.castingId == 6) {
+		pageLink = "page/" + req.body.page;
+	}
+
 	try {
 		// Fetch HTML of the page we want to scrape
 		const { data } = await axios.get(url + pageLink);
@@ -87,41 +91,53 @@ app.post("/get-castings-page", async (req, res) => {
 		switch (req.body.castingId) {
 			case 0: listItems = $(".blogPage article .liste_details"); break;
 			case 1: listItems = $(".entry-content-data"); break;
-			case 2: listItems = $(".casting-list-content div div div div .casting-box-content div .col-box-default"); break;
+			case 2: listItems = $(".casting-list-content div div div .casting-box-card"); break;
 			case 3: listItems = $(".blogPage article .liste_details"); break;
 			case 4: listItems = $(".castings .row div div .card-body"); break;
-			case 5: listItems = $(".listing-card-list .listing-card .listing-basicinfo"); break;
-			case 6: listItems = $(".blogPage article .liste_details"); break;
+			case 5: listItems = $(".listing-card-list .listing-card"); break;
+			case 6: listItems = $(".job_cards .job-card"); break;
 			default: listItems = $(".job_list .job_cards .job-card");
 		}
 
 		const castings = [];
 		listItems.each(async (idx, el) => {
-			const casting = { name: "", date: "", place: "", description: "", link: "", category: "" };
+			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
 
 			if (req.body.castingId == 2) {
-				casting.name = $(el).find(".casting-box-default a h3").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.date = $(el).find(".casting-box-info a span:nth-child(2) span").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.category = $(el).find(".casting-box-info a span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.link = $(el).find(".casting-box-default a").attr('href');
+				casting.name = $(el).find(".casting-box-content div .col-box-default a h3").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.date = $(el).find(".casting-box-content div .col-box-default .casting-box-info a span:nth-child(2) span").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.category = $(el).find(".casting-box-content div .col-box-default .casting-box-info a span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.link = $(el).find(".casting-box-content div .col-box-default.casting-box-default a").attr('href');
+				casting.image = $(el).find(".casting-box-heading a span span picture img").attr('src');
 			}
 
 			if (req.body.castingId == 4) {
 				casting.name = $(el).find("a h2").text().replace(/[\n\t]+/g, ' ').trim();
 				const detail = $(el).find("a p").text().trim().split('\n');
-				casting.date = detail[1].replace(/[\n\t]+/g, ' ').trim()
+				casting.date = detail[1].replace(/[\n\t]+/g, ' ').trim();
+				casting.image = $(el).find("a .casting-img img").attr('src');
 				casting.description = detail[0].replace(/[\n\t]+/g, ' ').trim();
 				casting.category = $(el).find("a div .casting-tag").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.link = $(el).find("a").attr('href');
 			}
 
 			if (req.body.castingId == 5) {
-				casting.name = $(el).find("a").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.category = $(el).find(".listing-attributes span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.place = $(el).find(".listing-attributes span:nth-child(2)").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.date = $(el).find(".listing-attributes").clone().find("span").remove().end().text().replace(/[\n\t]+/g, ' ').replace(/-/g, '').trim();
-				casting.description = $(el).find("p").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.link = $(el).find("a").attr('href');
+				casting.name = $(el).find(".listing-basicinfo a").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.category = $(el).find(".listing-basicinfo .listing-attributes span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.place = $(el).find(".listing-basicinfo .listing-attributes span:nth-child(2)").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.date = $(el).find(".listing-basicinfo .listing-attributes").clone().find("span").remove().end().text().replace(/[\n\t]+/g, ' ').replace(/-/g, '').trim();
+				casting.description = $(el).find(".listing-basicinfo p").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.link = $(el).find(".listing-basicinfo a").attr('href');
+				casting.image = $(el).find(".listing-thumb img").attr('src');
+			}
+
+			if (req.body.castingId == 6) {
+				casting.name = $(el).find("h3").text().replace(/[\n\t]+/g, ' ').trim();
+				const detail = $(el).find("p").text().replace(/[\n\t]+/g, ' ').replace(/\\|"/g, '').trim().split("    ");
+				casting.place = detail[detail.length - 1].trim();
+				casting.description = detail[0].trim();
+				casting.link = $(el).clone().find("span").remove().end().find("a").attr('href');
+				casting.image = $(el).find("img").attr('src');
 			}
 			castings.push(casting);
 		});
@@ -159,17 +175,17 @@ app.post("/get-castings", async (req, res) => {
 		switch (req.body.castingId) {
 			case 0: listItems = $(".blogPage article .liste_details"); break;
 			case 1: listItems = $(".entry-content-data"); break;
-			case 2: listItems = $(".casting-list-content div div div div .casting-box-content div .col-box-default"); break;
+			case 2: listItems = $(".casting-list-content div div div .casting-box-card"); break;
 			case 3: listItems = $("#castings .content .all_castings #result_castings div"); break;
 			case 4: listItems = $(".castings .row div div .card-body"); break;
-			case 5: listItems = $(".listing-card-list .listing-card .listing-basicinfo"); break;
-			case 6: listItems = $(".blogPage article .liste_details"); break;
+			case 5: listItems = $(".listing-card-list .listing-card"); break;
+			case 6: listItems = $(".job_cards .job-card"); break;
 			default: listItems = $(".job_list .job_cards .job-card");
 		}
 
 		const castings = [];
 		listItems.each(async (idx, el) => {
-			const casting = { name: "", date: "", place: "", description: "", link: "", category: "" };
+			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: ""  };
 
 			if (req.body.castingId == 0) {
 				casting.name = $(el).find("h2 a").text().replace(/[\n\t]+/g, ' ').trim();
@@ -187,10 +203,11 @@ app.post("/get-castings", async (req, res) => {
 			}
 
 			if (req.body.castingId == 2) {
-				casting.name = $(el).find(".casting-box-default a h3").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.date = $(el).find(".casting-box-info a span:nth-child(2) span").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.category = $(el).find(".casting-box-info a span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.link = $(el).find(".casting-box-default a").attr('href');
+				casting.name = $(el).find(".casting-box-content div .col-box-default a h3").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.date = $(el).find(".casting-box-content div .col-box-default .casting-box-info a span:nth-child(2) span").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.category = $(el).find(".casting-box-content div .col-box-default .casting-box-info a span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.link = $(el).find(".casting-box-content div .col-box-default.casting-box-default a").attr('href');
+				casting.image = $(el).find(".casting-box-heading a span span picture img").attr('src');
 			}
 
 			if (req.body.castingId == 3) {
@@ -203,23 +220,35 @@ app.post("/get-castings", async (req, res) => {
 			if (req.body.castingId == 4) {
 				casting.name = $(el).find("a h2").text().replace(/[\n\t]+/g, ' ').trim();
 				const detail = $(el).find("a p").text().trim().split('\n');
-				casting.date = detail[1].replace(/[\n\t]+/g, ' ').trim()
+				casting.date = detail[1].replace(/[\n\t]+/g, ' ').trim();
+				casting.image = $(el).find("a .casting-img img").attr('src');
 				casting.description = detail[0].replace(/[\n\t]+/g, ' ').trim();
 				casting.category = $(el).find("a div .casting-tag").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.link = $(el).find("a").attr('href');
 			}
 
 			if (req.body.castingId == 5) {
-				casting.name = $(el).find("a").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.category = $(el).find(".listing-attributes span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.place = $(el).find(".listing-attributes span:nth-child(2)").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.date = $(el).find(".listing-attributes").clone().find("span").remove().end().text().replace(/[\n\t]+/g, ' ').replace(/-/g, '').trim();
-				casting.description = $(el).find("p").text().replace(/[\n\t]+/g, ' ').trim();
-				casting.link = $(el).find("a").attr('href');
+				casting.name = $(el).find(".listing-basicinfo a").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.category = $(el).find(".listing-basicinfo .listing-attributes span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.place = $(el).find(".listing-basicinfo .listing-attributes span:nth-child(2)").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.date = $(el).find(".listing-basicinfo .listing-attributes").clone().find("span").remove().end().text().replace(/[\n\t]+/g, ' ').replace(/-/g, '').trim();
+				casting.description = $(el).find(".listing-basicinfo p").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.link = $(el).find(".listing-basicinfo a").attr('href');
+				casting.image = $(el).find(".listing-thumb img").attr('src');
+			}
+
+			if (req.body.castingId == 6) {
+				casting.name = $(el).find("h3").text().replace(/[\n\t]+/g, ' ').trim();
+				const detail = $(el).find("p").text().replace(/[\n\t]+/g, ' ').replace(/\\|"/g, '').trim().split("    ");
+				casting.place = detail[detail.length - 1].trim();
+				casting.image = $(el).find("img").attr('src');
+				casting.description = detail[0].trim();
+				casting.link = $(el).clone().find("span").remove().end().find("a").attr('href');
 			}
 
 			if (req.body.castingId == 7) {
 				casting.name = $(el).find("h3").text().replace(/[\n\t]+/g, ' ').trim();
+				casting.image = $(el).find("img").attr("src");
 				casting.place = $(el).find("p span").text().replace(/[\n\t]+/g, ' ').trim();
 				casting.description = $(el).find("p").clone().find("span").remove().end().text().replace(/[\n\t]+/g, ' ').trim().replace(/\\|"/g, '');
 				casting.link = "https://castprod.com/poste/" + casting.name.replace(/\s+/g, '-').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9-]/g, "");
@@ -249,7 +278,7 @@ app.post("/get-castings", async (req, res) => {
 		if (req.body.castingId == 5) {
 			castings.shift();
 		}
-		
+
 		res.send(castings);
 
 	} catch (err) {
