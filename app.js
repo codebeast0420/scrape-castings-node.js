@@ -209,7 +209,7 @@ app.post("/get-castings-search", async (req, res) => {
 	}
 
 	if (req.body.castingId == 4) {
-		pageLink = "?s%5B%5D=" + req.body.query.category + "&a=0#/";
+		pageLink = req.body.query.category == 0 ? "" : "?s%5B%5D=" + req.body.query.category + "&a=0#/";
 	}
 
 	if (req.body.castingId == 5) {
