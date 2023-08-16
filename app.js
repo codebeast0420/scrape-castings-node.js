@@ -31,7 +31,8 @@ const itemsMask = [
 const createCastings = (id, el, casting, $) => {
 	if (id == 0) {
 		casting.name = $(el).find("h2 a").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.date = $(el).find("p span").text().replace(/[\n\t]+/g, ' ').trim();
+		casting.date = $(el).find("p").clone().find(".lbid_featured").remove().end().text().replace(/[\n\t]+/g, ' ').trim();
+		casting.category = $(el).find("p .lbid_featured").text().replace(/[\n\t]+/g, ' ').trim();
 		casting.description = $(el).find("div").text().replace(/[\n\t]+/g, ' ').trim();
 		casting.link = $(el).find("h2 a").attr('href');
 	}
