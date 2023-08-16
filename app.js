@@ -192,9 +192,18 @@ app.post("/get-castings-page", async (req, res) => {
 
 app.post("/get-castings-search", async (req, res) => {
 	console.log('req', req.body);
-	const url = urls[req.body.castingId];
+	let url = urls[req.body.castingId];
 
 	let pageLink = '';
+
+	if (req.body.castingId == 0) {
+		pageLink = "/" + req.body.query.category;
+	}
+
+	if (req.body.castingId == 1) {
+		url = req.body.query.category ? req.body.query.category : urls[1];
+	}
+
 	if (req.body.castingId == 2) {
 		pageLink = "/" + req.body.query.category + "?id_gender=&age_rank=";
 	}
@@ -254,7 +263,7 @@ app.post("/get-castings", async (req, res) => {
 		let _categories = '';
 		switch (req.body.castingId) {
 			case 0: _categories = $("aside .custom-html-widget h5"); break;
-			case 1: _categories = $(".entry-content-data"); break;
+			case 1: _categories = $("#categories-4 ul li"); break;
 			case 2: _categories = $("#field_id_art option"); break;
 			case 3: _categories = $("#castings .content .all_castings #result_castings div"); break;
 			case 4: _categories = $(".castings-filter-content div:nth-child(3) label"); break;
@@ -263,12 +272,32 @@ app.post("/get-castings", async (req, res) => {
 			default: _categories = $("#category_job option");
 		}
 
+		if (req.body.castingId == 0 || req.body.castingId == 4) {
+			categories.push('All');
+		}
+
+		if (req.body.castingId == 1) {
+			categories.push({ name: 'All', value: urls[1] });
+		}
+
 		_categories.each(async (idx, el) => {
+			if (req.body.castingId == 0) {
+				categories.push($(el).find('a').text().replace(/[\n\t]+/g, ' ').trim());
+			}
+
+			if (req.body.castingId == 1) {
+				const _category = { name: '', value: '' }
+				_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
+				_category.value = $(el).find('a').attr("href");
+				categories.push(_category);
+			}
+
 			if (req.body.castingId == 2 || req.body.castingId == 4) {
 				categories.push($(el).text().replace(/[\n\t]+/g, ' ').trim());
 			}
+
 			if (req.body.castingId == 6 || req.body.castingId == 7) {
-				const _category = {name: '', value: ''}
+				const _category = { name: '', value: '' }
 				_category.name = $(el).text().replace(/[\n\t]+/g, ' ').trim();
 				_category.value = $(el).attr('value');
 				categories.push(_category);
