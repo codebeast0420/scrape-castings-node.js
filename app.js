@@ -164,7 +164,7 @@ app.post("/get-castings-search", async (req, res) => {
 	}
 
 	if (req.body.castingId == 4) {
-		pageLink = "?page=" + req.body.page + "#/";
+		pageLink = "?s%5B%5D=" + req.body.query.category + "&a=0#/";
 	}
 
 	if (req.body.castingId == 5) {
@@ -274,7 +274,7 @@ app.post("/get-castings", async (req, res) => {
 			case 1: _categories = $(".entry-content-data"); break;
 			case 2: _categories = $("#field_id_art option"); break;
 			case 3: _categories = $("#castings .content .all_castings #result_castings div"); break;
-			case 4: _categories = $(".castings .row div div .card-body"); break;
+			case 4: _categories = $(".castings-filter-content div:nth-child(3) label"); break;
 			case 5: _categories = $(".listing-card-list .listing-card"); break;
 			case 6: _categories = $(".job_cards .job-card"); break;
 			default: _categories = $(".job_list .job_cards .job-card");
