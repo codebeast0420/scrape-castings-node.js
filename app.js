@@ -210,7 +210,7 @@ app.post("/get-castings-search", async (req, res) => {
 	}
 
 	if (req.body.castingId == 4) {
-		pageLink = req.body.query.category == 0 ? "" : "?s%5B%5D=" + req.body.query.category + "&a=0#/";
+		url = req.body.query.category;
 	}
 
 	if (req.body.castingId == 5) {
@@ -267,13 +267,13 @@ app.post("/get-castings", async (req, res) => {
 			case 1: _categories = $("#categories-4 ul li"); break;
 			case 2: _categories = $("#field_id_art option"); break;
 			case 3: _categories = $("#castings .content .all_castings #result_castings div"); break;
-			case 4: _categories = $(".castings-filter-content div:nth-child(3) label"); break;
+			case 4: _categories = $(".castings-cat-items .item"); break;
 			case 5: _categories = $(".listing-card-list .listing-card"); break;
 			case 6: _categories = $("#category_job option"); break;
 			default: _categories = $("#category_job option");
 		}
 
-		if (req.body.castingId == 0 || req.body.castingId == 4) {
+		if (req.body.castingId == 0) {
 			categories.push('All');
 		}
 
@@ -286,14 +286,14 @@ app.post("/get-castings", async (req, res) => {
 				categories.push($(el).find('a').text().replace(/[\n\t]+/g, ' ').trim());
 			}
 
-			if (req.body.castingId == 1) {
+			if (req.body.castingId == 1 || req.body.castingId == 4) {
 				const _category = { name: '', value: '' }
 				_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
 				_category.value = $(el).find('a').attr("href");
 				categories.push(_category);
 			}
 
-			if (req.body.castingId == 2 || req.body.castingId == 4) {
+			if (req.body.castingId == 2) {
 				categories.push($(el).text().replace(/[\n\t]+/g, ' ').trim());
 			}
 
