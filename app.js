@@ -39,7 +39,7 @@ const createCastings = (id, el, casting, $) => {
 	if (id == 1) {
 		casting.name = $(el).find(".entry-article-header h2 a").text().replace(/[\n\t]+/g, ' ').trim();
 		casting.date = $(el).find(".entry-article-header .entry-meta span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.place = $(el).find(".entry-article-header .entry-meta span:nth-child(3) a").text().replace(/[\n\t]+/g, ' ').trim();
+		casting.category = $(el).find(".entry-article-header .entry-meta span:nth-child(3) a").text().replace(/[\n\t]+/g, ' ').trim();
 		casting.description = $(el).find(".entry-article-body").text().replace(/[\n\t]+/g, ' ').trim();
 		casting.link = $(el).find(".entry-article-header h2 a").attr('href');
 	}
