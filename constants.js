@@ -13,7 +13,7 @@ const itemsMask = [
 	".blogPage article .liste_details",
 	".entry-content-data",
 	".casting-list-content div div div .casting-box-card",
-	"#castings .content .all_castings #result_castings div",
+	"#castings #corps .content .all_castings #result_castings",
 	".castings .row div div .card-body",
 	".listing-card-list .listing-card",
 	".job_cards .job-card",

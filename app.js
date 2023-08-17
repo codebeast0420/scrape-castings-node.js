@@ -5,6 +5,7 @@ const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const puppeteer = require('puppeteer');
 
 const { urls, itemsMask, categoryMask, placeMask, fileNames } = require("./constants");
 
@@ -31,13 +32,6 @@ const createCastings = (id, el, casting, $) => {
 		casting.category = $(el).find(".casting-box-content div .col-box-default .casting-box-info a span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
 		casting.link = $(el).find(".casting-box-content div .col-box-default .casting-box-default a").attr('href');
 		casting.image = $(el).find(".casting-box-heading a span span picture img").attr('src');
-	}
-
-	if (id == 3) {
-		casting.name = $(el).find(".description h3 a").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.date = $(el).find(".infos").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.description = $(el).find(".description p").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.link = $(el).find(".description h3 a").attr('href');
 	}
 
 	if (id == 4) {
@@ -230,125 +224,167 @@ app.post("/get-castings", async (req, res) => {
 	console.log('req', req.body);
 	let url = urls[req.body.castingId];
 
-	try {
-		// Fetch HTML of the page we want to scrape
-		const { data } = await axios.get(url);
-		const $ = cheerio.load(data);
-		let listItems = '';
-		let _$ = '';
-		if (req.body.castingId == 5) {
-			let _data;
-			await axios.get(url + "castings").then((res) => _data = res.data);
-			_$ = cheerio.load(_data);
-			listItems = _$(itemsMask[req.body.castingId]);
-			// console.log("listItems", listItems);
-		}
-		else {
-			listItems = $(itemsMask[req.body.castingId]);
-		}
-
+	if (req.body.castingId == 3) {
+		const puppeteer = require('puppeteer');
 		const castings = [];
-		const categories = [];
-		const places = [];
-		const _categories = $(categoryMask[req.body.castingId]);
-		const _places = $(placeMask[req.body.castingId]);
 
-		if (req.body.castingId == 5) {
-			places.push({ region: 'All', value: "" });
-		}
+		(async () => {
+			const browser = await puppeteer.launch();
+			const page = await browser.newPage();
 
-		_places.each(async (idx, el) => {
-			if (req.body.castingId == 4) {
-				const _place = { region: '', value: '' }
-				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
-				_place.value = $(el).find("input").attr("value");
-				places.push(_place);
+			await page.goto('https://www.123casting.com/castings');
+
+			const castingElements = await page.$$('.line');
+			for (const element of castingElements) {
+				const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
+				const _name = await element.$('.description > h3 > a');
+				const _place = await element.$('.infos');
+				const _description = await element.$('.description > p');
+				casting.name = await _name.evaluate(el => el.textContent);
+				casting.link = await _name.evaluate(el => el.href);
+				casting.place = await _place.evaluate(el => el.textContent);
+				casting.description = await _description.evaluate(el => el.textContent);
+				castings.push(casting);
 			}
+			console.log('Main Heading:', castings);
 
+			// fs.writeFile("123casting.json", JSON.stringify(castings, null, 2), (err) => {
+			// 	if (err) {
+			// 		console.error(err);
+			// 		return;
+			// 	}
+			// 	console.log("Successfully written data to file");
+			// });
+
+			await browser.close();
+			res.send({
+				castings: castings,
+				categories: [],
+				places: []
+			});
+		})();
+	}
+
+	else {
+		try {
+			// Fetch HTML of the page we want to scrape
+			const { data } = await axios.get(url);
+			const $ = cheerio.load(data);
+			let listItems = '';
+			let _$ = '';
 			if (req.body.castingId == 5) {
-				const _place = { region: '', value: '' }
-				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
-				_place.value = $(el).attr("href");
-				places.push(_place);
-			}
-
-			if (req.body.castingId == 6 || req.body.castingId == 7) {
-				const _place = { region: '', value: '' }
-				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
-				_place.value = $(el).attr("value");
-				places.push(_place);
-			}
-		})
-
-		if (req.body.castingId == 0) {
-			categories.push({ name: 'All', value: "" });
-		}
-
-		if (req.body.castingId == 1) {
-			categories.push({ name: 'All', value: urls[1] });
-		}
-
-		_categories.each(async (idx, el) => {
-			if (req.body.castingId == 0) {
-				const _category = { name: '', value: '' }
-				_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
-				_category.value = "";
-				categories.push(_category);
-			}
-
-			if (req.body.castingId == 1 || req.body.castingId == 4 || req.body.castingId == 5) {
-				const _category = { name: '', value: '' }
-				_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
-				_category.value = $(el).find('a').attr("href");
-				categories.push(_category);
-			}
-
-			if (req.body.castingId == 2) {
-				const _category = { name: '', value: '' }
-				_category.name = $(el).text().replace(/[\n\t]+/g, ' ').trim();
-				_category.value = "";
-				categories.push(_category);
-			}
-
-			if (req.body.castingId == 6 || req.body.castingId == 7) {
-				const _category = { name: '', value: '' }
-				_category.name = $(el).text().replace(/[\n\t]+/g, ' ').trim();
-				_category.value = $(el).attr('value');
-				categories.push(_category);
-			}
-		});
-
-		if (req.body.castingId == 5) {
-			categories[6] = { name: 'All', value: "" };
-		}
-
-		listItems.each(async (idx, el) => {
-			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
-			if (req.body.castingId == 5) {
-				castings.push(createCastings(req.body.castingId, el, casting, _$));
+				let _data;
+				await axios.get(url + "castings").then((res) => _data = res.data);
+				_$ = cheerio.load(_data);
+				listItems = _$(itemsMask[req.body.castingId]);
 			}
 			else {
-				castings.push(createCastings(req.body.castingId, el, casting, $));
+				listItems = $(itemsMask[req.body.castingId]);
 			}
-		});
-		// console.dir(castings);
-		const fileName = fileNames[req.body.castingId];
-		// fs.writeFile(fileName, JSON.stringify(castings, null, 2), (err) => {
-		// 	if (err) {
-		// 		console.error(err);
-		// 		return;
-		// 	}
-		// 	console.log("Successfully written data to file");
-		// });
 
-		res.send({
-			castings: castings,
-			categories: categories,
-			places: places
-		});
+			const castings = [];
+			const categories = [];
+			const places = [];
+			const _categories = $(categoryMask[req.body.castingId]);
+			const _places = $(placeMask[req.body.castingId]);
 
-	} catch (err) {
-		console.error(err);
+			if (req.body.castingId == 5) {
+				places.push({ region: 'All', value: "" });
+			}
+
+			_places.each(async (idx, el) => {
+				if (req.body.castingId == 4) {
+					const _place = { region: '', value: '' }
+					_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+					_place.value = $(el).find("input").attr("value");
+					places.push(_place);
+				}
+
+				if (req.body.castingId == 5) {
+					const _place = { region: '', value: '' }
+					_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+					_place.value = $(el).attr("href");
+					places.push(_place);
+				}
+
+				if (req.body.castingId == 6 || req.body.castingId == 7) {
+					const _place = { region: '', value: '' }
+					_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+					_place.value = $(el).attr("value");
+					places.push(_place);
+				}
+			})
+
+			if (req.body.castingId == 0) {
+				categories.push({ name: 'All', value: "" });
+			}
+
+			if (req.body.castingId == 1) {
+				categories.push({ name: 'All', value: urls[1] });
+			}
+
+			_categories.each(async (idx, el) => {
+				if (req.body.castingId == 0) {
+					const _category = { name: '', value: '' }
+					_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
+					_category.value = "";
+					categories.push(_category);
+				}
+
+				if (req.body.castingId == 1 || req.body.castingId == 4 || req.body.castingId == 5) {
+					const _category = { name: '', value: '' }
+					_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
+					_category.value = $(el).find('a').attr("href");
+					categories.push(_category);
+				}
+
+				if (req.body.castingId == 2) {
+					const _category = { name: '', value: '' }
+					_category.name = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+					_category.value = "";
+					categories.push(_category);
+				}
+
+				if (req.body.castingId == 6 || req.body.castingId == 7) {
+					const _category = { name: '', value: '' }
+					_category.name = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+					_category.value = $(el).attr('value');
+					categories.push(_category);
+				}
+			});
+
+			if (req.body.castingId == 5) {
+				categories[6] = { name: 'All', value: "" };
+			}
+
+			listItems.each(async (idx, el) => {
+				const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
+				if (req.body.castingId == 5) {
+					castings.push(createCastings(req.body.castingId, el, casting, _$));
+				}
+				else {
+					castings.push(createCastings(req.body.castingId, el, casting, $));
+				}
+			});
+			// console.dir(castings);
+			const fileName = fileNames[req.body.castingId];
+			// fs.writeFile(fileName, JSON.stringify(castings, null, 2), (err) => {
+			// 	if (err) {
+			// 		console.error(err);
+			// 		return;
+			// 	}
+			// 	console.log("Successfully written data to file");
+			// });
+
+			res.send({
+				castings: castings,
+				categories: categories,
+				places: places
+			});
+
+		} catch (err) {
+			console.error(err);
+		}
 	}
 })
 
