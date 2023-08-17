@@ -38,7 +38,7 @@ const placeMask = [
 	"aa",
 	"aa",
 	"aa",
-	"aa",
+	"#region option",
 	"#region option"
 ]
 

@@ -248,7 +248,7 @@ app.post("/get-castings", async (req, res) => {
 		const _places = $(placeMask[req.body.castingId]);
 
 		_places.each(async (idx, el) => {
-			if (req.body.castingId == 7) {
+			if (req.body.castingId == 6 || req.body.castingId == 7) {
 				const _place = { region: '', value: '' }
 				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
 				_place.value = $(el).attr("value");
