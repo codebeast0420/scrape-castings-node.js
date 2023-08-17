@@ -6,27 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const urls = [
-	"https://www.maxicasting.com/castings",
-	"https://www.allcasting.fr/castings/",
-	"https://www.casting.fr/castings",
-	"https://www.123casting.com/castings",
-	"https://www.etoilecasting.com/",
-	"https://figurants.com/casting/region-parisienne-r782097",
-	"https://bookme.fr/",
-	'https://castprod.com/'
-]
-
-const itemsMask = [
-	".blogPage article .liste_details",
-	".entry-content-data",
-	".casting-list-content div div div .casting-box-card",
-	"#castings .content .all_castings #result_castings div",
-	".castings .row div div .card-body",
-	".listing-card-list .listing-card",
-	".job_cards .job-card",
-	".job_list .job_cards .job-card"
-];
+const { urls, itemsMask, categoryMask, placeMask, fileNames } = require("./constants");
 
 const createCastings = (id, el, casting, $) => {
 	if (id == 0) {
@@ -263,19 +243,18 @@ app.post("/get-castings", async (req, res) => {
 
 		const castings = [];
 		const categories = [];
-		const regions = [];
-		let _regions = '';
-		let _categories = '';
-		switch (req.body.castingId) {
-			case 0: _categories = $("aside .custom-html-widget h5"); break;
-			case 1: _categories = $("#categories-4 ul li"); break;
-			case 2: _categories = $("#field_id_art option"); break;
-			case 3: _categories = $("#castings .content .all_castings #result_castings div"); break;
-			case 4: _categories = $(".castings-cat-items .item"); break;
-			case 5: _categories = $(".listing-card-list .listing-card"); break;
-			case 6: _categories = $("#category_job option"); break;
-			default: _categories = $("#category_job option");
-		}
+		const places = [];
+		const _categories = $(categoryMask[req.body.castingId]);
+		const _places = $(placeMask[req.body.castingId]);
+
+		_places.each(async (idx, el) => {
+			if (req.body.castingId == 7) {
+				const _place = { region: '', value: '' }
+				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+				_place.value = $(el).attr("value");
+				places.push(_place);
+			}
+		})
 
 		if (req.body.castingId == 0) {
 			categories.push('All');
@@ -314,17 +293,7 @@ app.post("/get-castings", async (req, res) => {
 			castings.push(createCastings(req.body.castingId, el, casting, $));
 		});
 		// console.dir(castings);
-		let fileName = '';
-		switch (req.body.castingId) {
-			case 0: fileName = "maxicasting.json"; break;
-			case 1: fileName = "allcasting.json"; break;
-			case 2: fileName = "casting.json"; break;
-			case 3: fileName = "123casting.json"; break;
-			case 4: fileName = "etoilecasting.json"; break;
-			case 5: fileName = "figurants.json"; break;
-			case 6: fileName = "bookme.json"; break;
-			default: fileName = "castProd.json";
-		}
+		const fileName = fileNames[req.body.castingId];
 		// fs.writeFile(fileName, JSON.stringify(castings, null, 2), (err) => {
 		// 	if (err) {
 		// 		console.error(err);
@@ -339,7 +308,8 @@ app.post("/get-castings", async (req, res) => {
 
 		res.send({
 			castings: castings,
-			categories: categories
+			categories: categories,
+			places: places
 		});
 
 	} catch (err) {
