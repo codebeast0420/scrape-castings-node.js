@@ -4,7 +4,7 @@ const urls = [
 	"https://www.casting.fr/castings",
 	"https://www.123casting.com/castings",
 	"https://www.etoilecasting.com/",
-	"https://figurants.com/casting/region-parisienne-r782097",
+	"https://figurants.com/",
 	"https://bookme.fr/",
 	'https://castprod.com/'
 ]
@@ -26,7 +26,7 @@ const categoryMask = [
 	"#field_id_art option",
 	"#castings .content .all_castings #result_castings div",
 	".castings-cat-items .item",
-	".listing-card-list .listing-card",
+	".left-menu li",
 	"#category_job option",
 	"#category_job option"
 ]
@@ -37,7 +37,7 @@ const placeMask = [
 	"aa",
 	"aa",
 	".castings-filter-content div:nth-child(2) label",
-	"aa",
+	"#sidebar .location ul li a",
 	"#region option",
 	"#region option"
 ]

@@ -153,6 +153,7 @@ app.post("/get-castings-page", async (req, res) => {
 
 	try {
 		// Fetch HTML of the page we want to scrape
+		console.log("link", url + pageLink);
 		const { data } = await axios.get(url + pageLink);
 		const $ = cheerio.load(data);
 		let listItems = '';
@@ -163,10 +164,6 @@ app.post("/get-castings-page", async (req, res) => {
 			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
 			castings.push(createCastings(req.body.castingId, el, casting, $));
 		});
-
-		if (req.body.castingId == 5) {
-			castings.shift();
-		}
 
 		res.send(castings);
 
@@ -200,7 +197,7 @@ app.post("/get-castings-search", async (req, res) => {
 	}
 
 	if (req.body.castingId == 5) {
-		pageLink = "/" + req.body.page;
+		pageLink = req.body.query.category + req.body.query.region;
 	}
 
 	if (req.body.castingId == 6 || req.body.castingId == 7) {
@@ -221,9 +218,6 @@ app.post("/get-castings-search", async (req, res) => {
 			castings.push(createCastings(req.body.castingId, el, casting, $));
 		});
 
-		if (req.body.castingId == 5) {
-			castings.shift();
-		}
 
 		res.send(castings);
 
@@ -241,7 +235,17 @@ app.post("/get-castings", async (req, res) => {
 		const { data } = await axios.get(url);
 		const $ = cheerio.load(data);
 		let listItems = '';
-		listItems = $(itemsMask[req.body.castingId]);
+		let _$ = '';
+		if (req.body.castingId == 5) {
+			let _data;
+			await axios.get(url + "castings").then((res) => _data = res.data);
+			_$ = cheerio.load(_data);
+			listItems = _$(itemsMask[req.body.castingId]);
+			// console.log("listItems", listItems);
+		}
+		else {
+			listItems = $(itemsMask[req.body.castingId]);
+		}
 
 		const castings = [];
 		const categories = [];
@@ -249,11 +253,22 @@ app.post("/get-castings", async (req, res) => {
 		const _categories = $(categoryMask[req.body.castingId]);
 		const _places = $(placeMask[req.body.castingId]);
 
+		if (req.body.castingId == 5) {
+			places.push({ region: 'All', value: "" });
+		}
+
 		_places.each(async (idx, el) => {
 			if (req.body.castingId == 4) {
 				const _place = { region: '', value: '' }
 				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
 				_place.value = $(el).find("input").attr("value");
+				places.push(_place);
+			}
+
+			if (req.body.castingId == 5) {
+				const _place = { region: '', value: '' }
+				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+				_place.value = $(el).attr("href");
 				places.push(_place);
 			}
 
@@ -266,7 +281,7 @@ app.post("/get-castings", async (req, res) => {
 		})
 
 		if (req.body.castingId == 0) {
-			categories.push('All');
+			categories.push({ name: 'All', value: "" });
 		}
 
 		if (req.body.castingId == 1) {
@@ -275,10 +290,13 @@ app.post("/get-castings", async (req, res) => {
 
 		_categories.each(async (idx, el) => {
 			if (req.body.castingId == 0) {
-				categories.push($(el).find('a').text().replace(/[\n\t]+/g, ' ').trim());
+				const _category = { name: '', value: '' }
+				_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
+				_category.value = "";
+				categories.push(_category);
 			}
 
-			if (req.body.castingId == 1 || req.body.castingId == 4) {
+			if (req.body.castingId == 1 || req.body.castingId == 4 || req.body.castingId == 5) {
 				const _category = { name: '', value: '' }
 				_category.name = $(el).find('a').text().replace(/[\n\t]+/g, ' ').trim();
 				_category.value = $(el).find('a').attr("href");
@@ -286,7 +304,10 @@ app.post("/get-castings", async (req, res) => {
 			}
 
 			if (req.body.castingId == 2) {
-				categories.push($(el).text().replace(/[\n\t]+/g, ' ').trim());
+				const _category = { name: '', value: '' }
+				_category.name = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+				_category.value = "";
+				categories.push(_category);
 			}
 
 			if (req.body.castingId == 6 || req.body.castingId == 7) {
@@ -297,9 +318,18 @@ app.post("/get-castings", async (req, res) => {
 			}
 		});
 
+		if (req.body.castingId == 5) {
+			categories[6] = { name: 'All', value: "" };
+		}
+
 		listItems.each(async (idx, el) => {
 			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
-			castings.push(createCastings(req.body.castingId, el, casting, $));
+			if (req.body.castingId == 5) {
+				castings.push(createCastings(req.body.castingId, el, casting, _$));
+			}
+			else {
+				castings.push(createCastings(req.body.castingId, el, casting, $));
+			}
 		});
 		// console.dir(castings);
 		const fileName = fileNames[req.body.castingId];
@@ -310,10 +340,6 @@ app.post("/get-castings", async (req, res) => {
 		// 	}
 		// 	console.log("Successfully written data to file");
 		// });
-
-		if (req.body.castingId == 5) {
-			castings.shift();
-		}
 
 		res.send({
 			castings: castings,
