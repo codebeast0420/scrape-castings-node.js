@@ -194,7 +194,9 @@ app.post("/get-castings-search", async (req, res) => {
 	}
 
 	if (req.body.castingId == 4) {
-		url = req.body.query.category;
+		const tempLink = req.body.query.category == "" ? urls[4] : req.body.query.category;
+		console.log('temp ', tempLink);
+		url = (req.body.query.region == "on" || req.body.query.region == "") ? tempLink : tempLink + "?l%5B%5D=" + req.body.query.region + "&a=0#/";
 	}
 
 	if (req.body.castingId == 5) {
@@ -207,8 +209,8 @@ app.post("/get-castings-search", async (req, res) => {
 
 	try {
 		// Fetch HTML of the page we want to scrape
-		const { data } = await axios.get(url + pageLink);
 		console.log('link', url + pageLink);
+		const { data } = await axios.get(url + pageLink);
 		const $ = cheerio.load(data);
 		let listItems = '';
 		listItems = $(itemsMask[req.body.castingId]);
@@ -248,6 +250,13 @@ app.post("/get-castings", async (req, res) => {
 		const _places = $(placeMask[req.body.castingId]);
 
 		_places.each(async (idx, el) => {
+			if (req.body.castingId == 4) {
+				const _place = { region: '', value: '' }
+				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();
+				_place.value = $(el).find("input").attr("value");
+				places.push(_place);
+			}
+
 			if (req.body.castingId == 6 || req.body.castingId == 7) {
 				const _place = { region: '', value: '' }
 				_place.region = $(el).text().replace(/[\n\t]+/g, ' ').trim();

@@ -36,7 +36,7 @@ const placeMask = [
 	"aa",
 	"aa",
 	"aa",
-	"aa",
+	".castings-filter-content div:nth-child(2) label",
 	"aa",
 	"#region option",
 	"#region option"
