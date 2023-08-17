@@ -167,6 +167,10 @@ app.post("/get-castings-page", async (req, res) => {
 		pageLink = "page/" + req.body.page;
 	}
 
+	if (req.body.castingId == 7) {
+		pageLink = "page/" + req.body.page;
+	}
+
 	try {
 		// Fetch HTML of the page we want to scrape
 		const { data } = await axios.get(url + pageLink);
