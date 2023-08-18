@@ -86,8 +86,13 @@ app.post("/load-more", async (req, res) => {
 		console.log('here');
 		for (var i = 0; i < 5 * req.body.index; i++) {
 			prevHeight = prevHeight + 400;
-			items = await page.$$('article');
+			if(req.body.castingId == 0) {
+				items = await page.$$('article');
+			}
 
+			if(req.body.castingId == 1) {
+				items = await page.$$('.entry-content-data');
+			}
 			await page.evaluate(`window.scrollTo(0, ${prevHeight})`);
 			await page.waitForFunction(`document.body.scrollHeight > ${prevHeight}`);
 			await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -99,11 +104,24 @@ app.post("/load-more", async (req, res) => {
 
 		for (const item of items) {
 			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
-			const _name = await item.$('h2 > a');
-			const _description = await item.$('p');
-			const _category = await item.$('p > .lbid_featured');
+			let _name, _description, _category, _date;
+			if(req.body.castingId == 0) {
+				_name = await item.$('h2 > a');
+				_description = await item.$('div');
+				_date = await item.$('p')
+				_category = await item.$('p > .lbid_featured');
+			}
+
+			if(req.body.castingId == 1) {
+				_name = await item.$('.entry-article-header > h2 > a');
+				_description = await item.$('.entry-article-body');
+				_date = await item.$('.entry-article-header .entry-meta span:first-child');
+				_category = await item.$('.entry-article-header > .entry-meta > span:nth-child(3) > a');
+			}
+
 			casting.name = await _name.evaluate(el => el.textContent);
 			casting.link = await _name.evaluate(el => el.href);
+			casting.date = await _date.evaluate(el => el.textContent);
 			casting.category = await _category.evaluate(el => el.textContent);
 			casting.description = await _description.evaluate(el => el.textContent);
 			castings.push(casting);
