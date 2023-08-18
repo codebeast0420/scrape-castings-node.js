@@ -44,16 +44,6 @@ const createCastings = (id, el, casting, $) => {
 		casting.link = $(el).find("a").attr('href');
 	}
 
-	if (id == 5) {
-		casting.name = $(el).find(".listing-basicinfo a").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.category = $(el).find(".listing-basicinfo .listing-attributes span:first-child").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.place = $(el).find(".listing-basicinfo .listing-attributes span:nth-child(2)").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.date = $(el).find(".listing-basicinfo .listing-attributes").clone().find("span").remove().end().text().replace(/[\n\t]+/g, ' ').replace(/-/g, '').trim();
-		casting.description = $(el).find(".listing-basicinfo p").text().replace(/[\n\t]+/g, ' ').trim();
-		casting.link = $(el).find(".listing-basicinfo a").attr('href');
-		casting.image = $(el).find(".listing-thumb img").attr('src');
-	}
-
 	if (id == 6) {
 		casting.name = $(el).find("h3").text().replace(/[\n\t]+/g, ' ').trim();
 		const detail = $(el).find("p").text().replace(/[\n\t]+/g, ' ').replace(/\\|"/g, '').trim().split("    ");
