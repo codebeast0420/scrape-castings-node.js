@@ -135,7 +135,8 @@ app.post("/load-more", async (req, res) => {
 		});
 
 		const page = await browser.newPage();
-		await page.goto("https://www.maxicasting.com/castings");
+			await page.goto(urls[req.body.castingId]);
+	
 
 		const items = await scrapeInfiniteScrollItems(page, 10);
 		await browser.close();
