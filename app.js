@@ -76,26 +76,39 @@ app.get("/", (req, res) => {
 });
 
 app.post("/load-more", async (req, res) => {
-	const puppeteer = require('puppeteer');
 
 	const scrapeInfiniteScrollItems = async (page, itemTargetCount) => {
 		let items = [];
+		let castings = [];
+		let prevHeight = 1500;
+		console.log("index", req.body.index);
 
 		console.log('here');
-		items = await page.evaluate(() => {
-			const _items = Array.from(document.querySelectorAll("article"));
-			console.log('item', _items);
-			return _items.map((item) => item.innerText);
-		})
-		previousHeight = await page.evaluate('document.body.scrollHeight');
-		await page.evaluate(`window.scrollTo(0, ${previousHeight - 680})`);
-		await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`);
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		for (var i = 0; i < 5 * req.body.index; i++) {
+			prevHeight = prevHeight + 400;
+			items = await page.$$('article');
+
+			await page.evaluate(`window.scrollTo(0, ${prevHeight})`);
+			await page.waitForFunction(`document.body.scrollHeight > ${prevHeight}`);
+			await new Promise((resolve) => setTimeout(resolve, 1000));
 
 
-		console.log(items);
-		console.log(items.length);
-		return items;
+			console.log(items);
+			console.log(items.length);
+		}
+
+		for (const item of items) {
+			const casting = { name: "", date: "", place: "", description: "", link: "", category: "", image: "" };
+			const _name = await item.$('h2 > a');
+			const _description = await item.$('p');
+			const _category = await item.$('p > .lbid_featured');
+			casting.name = await _name.evaluate(el => el.textContent);
+			casting.link = await _name.evaluate(el => el.href);
+			casting.category = await _category.evaluate(el => el.textContent);
+			casting.description = await _description.evaluate(el => el.textContent);
+			castings.push(casting);
+		}
+		return castings;
 	}
 
 	(async () => {
@@ -107,6 +120,12 @@ app.post("/load-more", async (req, res) => {
 		await page.goto("https://www.maxicasting.com/castings");
 
 		const items = await scrapeInfiniteScrollItems(page, 10);
+		await browser.close();
+		res.send({
+			castings: items,
+			categories: [],
+			places: []
+		});
 	})();
 })
 
